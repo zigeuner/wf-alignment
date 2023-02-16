@@ -12,7 +12,7 @@ OPTIONAL_FILE = file("$projectDir/data/OPTIONAL_FILE")
 process alignReads {
     label "wfalignment"
     cpus params.threads
-    memory 64.GB
+    memory params.memory
     input:
         tuple val(meta), path(input)
         path combined_refs
@@ -35,7 +35,7 @@ process alignReads {
 process sortInputBam {
     label "wfalignment"
     cpus params.threads
-    memory 64.GB    
+    memory params.memory
     input:
         tuple val(meta), path(bam)
     output:
@@ -50,8 +50,8 @@ process sortInputBam {
 
 process indexBam {
     label "wfalignment"
-    cpus 1
-    memory 64.GB    
+    cpus 2
+    memory params.memory
     input:
         tuple val(meta), path(bam)
     output:
@@ -65,7 +65,7 @@ process indexBam {
 process bamstats {
     label "wfalignment"
     cpus params.threads
-    memory 64.GB    
+    memory params.memory
     input:
         tuple val(meta), path(bam), path(index)
     output:
@@ -101,7 +101,7 @@ process readDepthPerRef {
     depth_threads = {params.threads >= 4  ? 4 : params.threads}
     label "wfalignment"
     cpus depth_threads
-    memory 64.GB    
+    memory params.memory
     input:
         tuple val(meta), path(alignment)
         path ref_len
